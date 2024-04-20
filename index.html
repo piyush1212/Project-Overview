@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Sports Day</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+    h1 {
+        text-align: center;
+    }
+    .event-log {
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>School Sports Day</h1>
+    <div class="event-log">
+        <p id="event-log"></p>
+    </div>
+</div>
+
+<script>
+    function OpeningCeremony(callbackFnc) {
+        document.getElementById("event-log").innerHTML += "Let the games begin<br>";
+        setTimeout(() => {
+            const sportsObj = { red: 0, blue: 0, green: 0, yellow: 0 };
+            Race100M(sportsObj, callbackFnc);
+        }, 1000);
+    }
+
+    function Race100M(scoreObj, callbackFnc) {
+        document.getElementById("event-log").innerHTML += "Race100M started<br>";
+        const randomTimes = {
+            red: Math.floor(Math.random() * 6) + 10,
+            blue: Math.floor(Math.random() * 6) + 10,
+            green: Math.floor(Math.random() * 6) + 10,
+            yellow: Math.floor(Math.random() * 6) + 10
+        };
+        const sortedColors = Object.keys(randomTimes).sort((a, b) => randomTimes[a] - randomTimes[b]);
+        scoreObj[sortedColors[0]] += 50;
+        scoreObj[sortedColors[1]] += 25;
+        document.getElementById("event-log").innerHTML += "Race100M completed<br>";
+        document.getElementById("event-log").innerHTML += "Updated scores: " + JSON.stringify(scoreObj) + "<br>";
+        setTimeout(() => {
+            callbackFnc(scoreObj, LongJump);
+        }, 2000);
+    }
+
+    function LongJump(scoreObj, callbackFnc) {
+        document.getElementById("event-log").innerHTML += "LongJump started<br>";
+        const randomColor = ["red", "yellow", "green", "blue"][Math.floor(Math.random() * 4)];
+        scoreObj[randomColor] += 150;
+        document.getElementById("event-log").innerHTML += "LongJump completed. " + randomColor + " won the Long Jump.<br>";
+        document.getElementById("event-log").innerHTML += "Updated scores: " + JSON.stringify(scoreObj) + "<br>";
+        setTimeout(() => {
+            callbackFnc(scoreObj, HighJump);
+        }, 2000);
+    }
+
+    function HighJump(scoreObj, callbackFnc) {
+        document.getElementById("event-log").innerHTML += "HighJump started<br>";
+        const userColor = prompt("What colour secured the highest jump?");
+        if (userColor && scoreObj.hasOwnProperty(userColor)) {
+            scoreObj[userColor] += 100;
+            document.getElementById("event-log").innerHTML += userColor + " secured the highest jump.<br>";
+        } else {
+            document.getElementById("event-log").innerHTML += "Event was cancelled<br>";
+        }
+        document.getElementById("event-log").innerHTML += "Updated scores: " + JSON.stringify(scoreObj) + "<br>";
+        AwardCeremony(scoreObj);
+    }
+
+    function AwardCeremony(scoreObj) {
+        document.getElementById("event-log").innerHTML += "Award Ceremony started<br>";
+        const sortedScores = Object.entries(scoreObj).sort((a, b) => b[1] - a[1]);
+        document.getElementById("event-log").innerHTML += sortedScores[0][0] + " came first with " + sortedScores[0][1] + " points.<br>";
+        document.getElementById("event-log").innerHTML += sortedScores[1][0] + " came second with " + sortedScores[1][1] + " points.<br>";
+        document.getElementById("event-log").innerHTML += sortedScores[2][0] + " came third with " + sortedScores[2][1] + " points.<br>";
+        document.getElementById("event-log").innerHTML += "Award Ceremony completed<br>";
+    }
+
+    OpeningCeremony(Race100M);
+</script>
+
+</body>
+</html>
